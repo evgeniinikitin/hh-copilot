@@ -1,0 +1,1 @@
+"""HeadHunter public vacancy access."""

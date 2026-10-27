@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HH Copilot</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <div class="mark">HH</div>
+        <div>
+          <h1>HH Copilot</h1>
+          <p class="subtitle">Избранное → готовый отклик</p>
+        </div>
+      </header>
+
+      <div class="backend-row">
+        <span id="backend-dot" class="dot"></span>
+        <span id="backend">Проверяю backend…</span>
+      </div>
+
+      <dl>
+        <div><dt>Последняя синхронизация</dt><dd id="last-sync">—</dd></div>
+        <div><dt>Избранных известно</dt><dd id="known">—</dd></div>
+        <div><dt>Обработано</dt><dd id="processed">—</dd></div>
+        <div><dt>В очереди</dt><dd id="queue">—</dd></div>
+      </dl>
+
+      <p id="message" role="status"></p>
+      <button id="sync" class="primary">Синхронизировать</button>
+      <div class="secondary-actions">
+        <button data-limit="5">Обработать последние 5</button>
+        <button data-limit="10">Последние 10</button>
+      </div>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>

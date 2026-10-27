@@ -1,0 +1,1 @@
+"""Codex-powered vacancy analysis."""

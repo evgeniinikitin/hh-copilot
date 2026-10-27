@@ -1,0 +1,33 @@
+from __future__ import annotations
+
+from sqlalchemy import create_engine, event
+from sqlalchemy.engine import Engine
+from sqlalchemy.orm import Session, sessionmaker
+
+from app.config import Settings
+from app.database.models import Base
+
+
+def create_database_engine(settings: Settings) -> Engine:
+    connect_args = (
+        {"check_same_thread": False} if settings.resolved_database_url.startswith("sqlite") else {}
+    )
+    engine = create_engine(settings.resolved_database_url, connect_args=connect_args, future=True)
+    if settings.resolved_database_url.startswith("sqlite"):
+        event.listen(engine, "connect", _configure_sqlite)
+    return engine
+
+
+def _configure_sqlite(dbapi_connection: object, _connection_record: object) -> None:
+    cursor = dbapi_connection.cursor()  # type: ignore[attr-defined]
+    cursor.execute("PRAGMA journal_mode=WAL")
+    cursor.execute("PRAGMA foreign_keys=ON")
+    cursor.close()
+
+
+def create_session_factory(engine: Engine) -> sessionmaker[Session]:
+    return sessionmaker(bind=engine, expire_on_commit=False, class_=Session)
+
+
+def initialize_database(engine: Engine) -> None:
+    Base.metadata.create_all(engine)
